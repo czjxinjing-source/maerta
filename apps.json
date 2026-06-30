@@ -1,0 +1,26 @@
+[
+  {
+    "name": "微信",
+    "type": "app",
+    "path": "C:\\Program Files\\Tencent\\WeChat\\WeChat.exe",
+    "fallbackUrl": ""
+  },
+  {
+    "name": "QQ",
+    "type": "app",
+    "path": "C:\\Program Files\\Tencent\\QQNT\\QQ.exe",
+    "fallbackUrl": ""
+  },
+  {
+    "name": "ChatGPT",
+    "type": "app_or_url",
+    "path": "",
+    "fallbackUrl": "https://chatgpt.com/"
+  },
+  {
+    "name": "Codex",
+    "type": "app_or_url",
+    "path": "",
+    "fallbackUrl": "https://chatgpt.com/codex"
+  }
+]

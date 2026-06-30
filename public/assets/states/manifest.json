@@ -1,0 +1,20 @@
+{
+  "idle": "idle.png",
+  "click": "click.png",
+  "doubleClick": "happy.png",
+  "drag": "drag.png",
+  "drop": "drop.png",
+  "happy": "happy.png",
+  "angry": "angry.png",
+  "sleep": "sleep.png",
+  "sleepBreathing": "sleep_breathing.png",
+  "wake": "wake.png",
+  "sleepy": "sleepy.png",
+  "surprised": "surprised.png",
+  "sad": "sad.png",
+  "run": "run.png",
+  "jump": "jump.png",
+  "greet": "greet.png",
+  "picked": "picked.png",
+  "angryRecover": "angry_recover.png"
+}

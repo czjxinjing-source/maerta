@@ -1,0 +1,569 @@
+@import './base.css';
+
+.booting {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: rgba(47, 34, 26, 0.9);
+  font-size: 15px;
+}
+
+.pet-root,
+.pet-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  --drag-tilt: 0deg;
+}
+
+.pet-zone {
+  position: absolute;
+  left: 42px;
+  bottom: 18px;
+  width: var(--stage-width);
+  height: var(--stage-height);
+  overflow: visible;
+}
+
+.pet-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 88%;
+  will-change: transform;
+}
+
+.pet-button {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+}
+
+.pet-button:active {
+  cursor: grabbing;
+}
+
+.pet-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transform-origin: 50% 86%;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.pet-image-current {
+  animation-duration: 900ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+
+.pet-image-previous {
+  opacity: 0;
+  animation: image-out 220ms ease-out both;
+}
+
+.speech-bubble {
+  position: absolute;
+  left: 28%;
+  top: -4px;
+  z-index: 7;
+  max-width: 190px;
+  min-width: 120px;
+  padding: 10px 13px;
+  border: 0;
+  border-radius: 18px;
+  color: #2c2433;
+  background: rgba(255, 252, 247, 0.86);
+  box-shadow:
+    0 10px 24px rgba(73, 55, 77, 0.11),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition:
+    opacity 180ms ease-out,
+    transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1.2);
+  pointer-events: none;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  bottom: -7px;
+  width: 13px;
+  height: 13px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.speech-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.launcher-panel,
+.settings-panel,
+.context-panel {
+  position: absolute;
+  z-index: 8;
+  width: 188px;
+  padding: 12px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(255, 252, 247, 0.88), rgba(239, 232, 248, 0.82));
+  box-shadow:
+    0 12px 24px rgba(42, 34, 50, 0.11),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition:
+    opacity 180ms ease-out,
+    transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1.08);
+  pointer-events: none;
+}
+
+.launcher-panel {
+  left: calc(100% + 14px);
+  bottom: 84px;
+}
+
+.settings-panel {
+  left: calc(100% + 14px);
+  bottom: 22px;
+  display: grid;
+  gap: 9px;
+}
+
+.context-panel {
+  left: calc(100% + 14px);
+  bottom: 38px;
+  display: grid;
+  gap: 6px;
+  width: 168px;
+}
+
+.launcher-panel.is-open,
+.settings-panel.is-open,
+.context-panel.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  color: #2d2234;
+  font-size: 14px;
+}
+
+.icon-button,
+.context-panel button,
+.app-item,
+.switch-row,
+.frequency-select {
+  border: 0;
+  color: #2d2234;
+  font: inherit;
+}
+
+.icon-button {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(128, 99, 166, 0.14);
+  cursor: pointer;
+}
+
+.app-list {
+  display: grid;
+  gap: 8px;
+  max-height: 230px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.app-item {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: 12px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.46);
+  cursor: pointer;
+  transition:
+    transform 160ms ease-out,
+    background-color 160ms ease-out;
+}
+
+.app-item:hover {
+  background: rgba(255, 248, 235, 0.92);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.app-item span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-item small {
+  overflow: hidden;
+  color: rgba(45, 34, 52, 0.58);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.context-panel button,
+.switch-row,
+.frequency-select {
+  min-height: 32px;
+  border-radius: 11px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.44);
+  cursor: pointer;
+  text-align: left;
+  font-size: 12px;
+}
+
+.setting-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  color: #2d2234;
+  font-size: 12px;
+}
+
+.setting-row input {
+  min-width: 0;
+}
+
+.settings-panel p {
+  margin: 0;
+  overflow: hidden;
+  color: rgba(45, 34, 52, 0.56);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.particle {
+  position: absolute;
+  bottom: 58%;
+  z-index: 6;
+  color: #e0a727;
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0;
+  animation-name: particle-rise;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.toast {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  z-index: 10;
+  max-width: 230px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  color: #fffdf8;
+  background: rgba(48, 38, 58, 0.86);
+  box-shadow: 0 12px 26px rgba(39, 31, 46, 0.18);
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 180ms ease-out,
+    transform 180ms ease-out;
+  pointer-events: none;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motion-idleBreathing .pet-image-current {
+  animation: idle-breathing 3200ms ease-in-out infinite;
+}
+
+.motion-softBounce .pet-image-current {
+  animation: soft-bounce 520ms cubic-bezier(0.2, 0.9, 0.2, 1.15) both;
+}
+
+.motion-happyBounce .pet-image-current {
+  animation: happy-bounce 880ms cubic-bezier(0.16, 0.9, 0.2, 1.16) both;
+}
+
+.motion-angryShake .pet-image-current {
+  animation: angry-shake 780ms ease-in-out both;
+}
+
+.motion-sleepBreathing .pet-image-current {
+  animation: sleep-breathing 3400ms ease-in-out infinite;
+}
+
+.motion-surprisePop .pet-image-current {
+  animation: surprise-pop 760ms cubic-bezier(0.2, 0.82, 0.2, 1.16) both;
+}
+
+.motion-sadTremble .pet-image-current {
+  animation: sad-tremble 1300ms ease-in-out both;
+}
+
+.motion-dragSway .pet-image-current,
+.motion-pickedSway .pet-image-current {
+  animation: drag-sway 900ms ease-in-out infinite;
+}
+
+.motion-dropRebound .pet-image-current {
+  animation: drop-rebound 850ms cubic-bezier(0.18, 0.9, 0.2, 1.2) both;
+}
+
+.motion-runBob .pet-image-current {
+  animation: run-bob 620ms ease-in-out infinite;
+}
+
+.motion-jumpArc .pet-image-current {
+  animation: jump-arc 900ms cubic-bezier(0.2, 0.85, 0.2, 1.08) both;
+}
+
+.motion-greetWave .pet-image-current {
+  animation: greet-wave 1000ms ease-in-out both;
+}
+
+.motion-wakeStretch .pet-image-current,
+.motion-yawn .pet-image-current {
+  animation: wake-stretch 1200ms ease-in-out both;
+}
+
+@keyframes image-out {
+  from {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes idle-breathing {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.012);
+  }
+}
+
+@keyframes soft-bounce {
+  0% {
+    transform: translateY(3px) scale(0.985);
+    opacity: 0.88;
+  }
+  70% {
+    transform: translateY(-5px) scale(1.018);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes happy-bounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  26% {
+    transform: translateY(-18px) rotate(-3deg) scale(1.035);
+  }
+  55% {
+    transform: translateY(2px) rotate(2deg) scale(0.99);
+  }
+  78% {
+    transform: translateY(-6px) rotate(-1deg) scale(1.012);
+  }
+}
+
+@keyframes angry-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  18% {
+    transform: translateX(-7px) rotate(-2deg);
+  }
+  38% {
+    transform: translateX(7px) rotate(2deg);
+  }
+  58% {
+    transform: translateX(-4px) rotate(-1deg);
+  }
+  78% {
+    transform: translateX(4px) rotate(1deg);
+  }
+}
+
+@keyframes sleep-breathing {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(3px) scale(1.018);
+  }
+}
+
+@keyframes surprise-pop {
+  0% {
+    transform: translateY(4px) scale(0.92);
+    opacity: 0.82;
+  }
+  34% {
+    transform: translateY(-10px) scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sad-tremble {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  35% {
+    transform: translateY(5px) rotate(-1deg) scale(0.99);
+  }
+  58% {
+    transform: translateY(4px) rotate(1deg);
+  }
+}
+
+@keyframes drag-sway {
+  0%,
+  100% {
+    transform: rotate(var(--drag-tilt)) translateY(0);
+  }
+  50% {
+    transform: rotate(calc(var(--drag-tilt) * -0.75)) translateY(-5px);
+  }
+}
+
+@keyframes drop-rebound {
+  0% {
+    transform: translateY(-14px) scale(1.02);
+  }
+  45% {
+    transform: translateY(8px) scale(0.96, 1.04);
+  }
+  72% {
+    transform: translateY(-5px) scale(1.015, 0.99);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes run-bob {
+  0%,
+  100% {
+    transform: translateX(-4px) translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(5px) translateY(-7px) rotate(2deg);
+  }
+}
+
+@keyframes jump-arc {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  38% {
+    transform: translateY(-26px) scale(1.035);
+  }
+  70% {
+    transform: translateY(4px) scale(0.98, 1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes greet-wave {
+  0%,
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  25% {
+    transform: rotate(-3deg) translateY(-4px) scale(1.02);
+  }
+  52% {
+    transform: rotate(3deg) translateY(-2px);
+  }
+  76% {
+    transform: rotate(-1deg) translateY(-3px);
+  }
+}
+
+@keyframes wake-stretch {
+  0% {
+    transform: translateY(7px) scale(0.97);
+    opacity: 0.94;
+  }
+  48% {
+    transform: translateY(-7px) scale(1.025);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes particle-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.7);
+  }
+  16% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-72px) scale(1.08);
+  }
+}
